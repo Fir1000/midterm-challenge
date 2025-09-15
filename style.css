@@ -1,0 +1,63 @@
+/* ค่าเริ่มต้น (แล็ปท็อปและขนาดใหญ่ขึ้น) */
+.navbar {
+  display: block;
+}
+.tab-bar,
+.hamburger-menu {
+  display: none;
+}
+
+/* แท็บเล็ต */
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+  .navbar {
+    display: none;
+  }
+  .tab-bar {
+    display: block;
+  }
+}
+
+/* มือถือ */
+@media screen and (max-width: 767px) {
+  .navbar,
+  .tab-bar {
+    display: none;
+  }
+  .hamburger-menu {
+    display: block;
+  }
+}
+
+.half-screen {
+  height: 50vh;
+  background-color: #f4f4f4;
+}
+
+.cards-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+form input, form textarea {
+  display: block;
+  margin: 10px 0;
+  width: 100%;
+  padding: 8px;
+}
+
+#goTop {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  padding: 10px 15px;
+  cursor: pointer;
+}
