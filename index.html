@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midterm Challenge</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+
+    /* Logo Styling */
+    .logo {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 50%;
+      padding: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.1);
+    }
+
+    /* Navigation */
+    .navbar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      z-index: 999;
+      padding: 15px 0;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding-right: 100px;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 10px 20px;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .navbar a:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Tab bar and hamburger menu - hidden by default, shown on smaller screens */
+    .tab-bar, .hamburger-menu {
+      display: none;
+    }
+
+    /* Introduction Section */
+    #introduction {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      padding: 0 20px;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
+    }
+
+    #introduction h2 {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      font-weight: 700;
+      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+      animation: fadeInUp 1s ease-out;
+    }
+
+    #introduction p {
+      font-size: 1.3rem;
+      max-width: 600px;
+      opacity: 0.9;
+      animation: fadeInUp 1s ease-out 0.5s both;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Cards Section */
+    .cards-section {
+      padding: 80px 20px;
+      background: linear-gradient(45deg, #f0f2f5 0%, #e8ebf0 100%);
+      min-height: 100vh;
+    }
+
+    .cards-section::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05' fill-rule='nonzero'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+      z-index: 0;
+    }
+
+    .cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .card img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover img {
+      transform: scale(1.05);
+    }
+
+    .card h3 {
+      padding: 20px;
+      font-size: 1.5rem;
+      color: #2c3e50;
+      font-weight: 600;
+    }
+
+    .card p {
+      padding: 0 20px 20px;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    /* Contact Section */
+    #contact {
+      padding: 80px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-align: center;
+    }
+
+    #contact h2 {
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      font-weight: 600;
+    }
+
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    form input,
+    form textarea {
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    form input:focus,
+    form textarea:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: scale(1.02);
+    }
+
+    form input::placeholder,
+    form textarea::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    form textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    form button {
+      padding: 15px 30px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    form button:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Go to top button */
+    #goTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: rgba(102, 126, 234, 0.9);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    #goTop:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      background: rgba(102, 126, 234, 1);
+    }
+
+    /* Footer */
+    footer {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .navbar {
+        display: none;
+      }
+      
+      .tab-bar {
+        display: block;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        z-index: 999;
+        padding: 10px 0;
+      }
+
+      .tab-bar ul {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+      }
+
+      .tab-bar a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        background: rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .tab-bar a:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      #introduction h2 {
+        font-size: 2.5rem;
+      }
+
+      #introduction p {
+        font-size: 1.1rem;
+      }
+
+      .cards-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .tab-bar {
+        display: none;
+      }
+
+      .hamburger-menu {
+        display: block;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+      }
+
+      .hamburger-menu button {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .hamburger-menu button:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      #introduction h2 {
+        font-size: 2rem;
+      }
+
+      .logo {
+        top: 10px;
+        left: 10px;
+      }
+    }
+
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Loading animation */
+    .card {
+      animation: slideInUp 0.6s ease-out forwards;
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+    .card:nth-child(4) { animation-delay: 0.4s; }
+    .card:nth-child(5) { animation-delay: 0.5s; }
+    .card:nth-child(6) { animation-delay: 0.6s; }
+    .card:nth-child(7) { animation-delay: 0.7s; }
+    .card:nth-child(8) { animation-delay: 0.8s; }
+    .card:nth-child(9) { animation-delay: 0.9s; }
+    .card:nth-child(10) { animation-delay: 1.0s; }
+    .card:nth-child(11) { animation-delay: 1.1s; }
+    .card:nth-child(12) { animation-delay: 1.2s; }
+    .card:nth-child(13) { animation-delay: 1.3s; }
+    .card:nth-child(14) { animation-delay: 1.4s; }
+    .card:nth-child(15) { animation-delay: 1.5s; }
+
+    @keyframes slideInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🔹 โลโก้ SVG -->
+  <div class="logo">
+    <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#4CAF50; stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#2E7D32; stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <circle cx="30" cy="30" r="25" fill="url(#grad)" />
+      <path d="M20 20 h10 v20 h-10 z M30 20 h10 v20 h-10 z" fill="white" />
+    </svg>
+  </div>
+
+  <!-- 🔹 แถบนำทาง -->
+  <nav class="navbar">
+    <ul>
+      <li><a href="#introduction">Top</a></li>
+      <li><a href="#introduction">Introduction</a></li>
+      <li><a href="#palestine">Palestine</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#bottom">Bottom</a></li>
+    </ul>
+  </nav>
+
+  <!-- 🔹 แถบแท็บ (Tablet) -->
+  <div class="tab-bar">
+    <ul>
+      <li><a href="#introduction">Top</a></li>
+      <li><a href="#introduction">Intro</a></li>
+      <li><a href="#palestine">Palestine</a></li>
+    </ul>
+  </div>
+
+  <!-- 🔹 เมนูแฮมเบอร์เกอร์ (มือถือ) -->
+  <div class="hamburger-menu">
+    <button onclick="alert('Menu functionality can be added here!')">☰</button>
+  </div>
+
+  <!-- 🔹 ส่วนแนะนำตัว -->
+  <section id="introduction" class="half-screen">
+    <h2>Build Your Mindset</h2>
+    <p>ส่วนนี้ใช้ในการสร้างแรงบันดาลใจและแนะนำหัวข้อ พร้อมกับการนำเสนอเนื้อหาที่น่าสนใจเกี่ยวกับสถานที่สำคัญ</p>
+  </section>
+
+  <!-- 🔹 บัตรข้อมูลผู้ว่าราชการของปาเลสไตน์ -->
+  <section id="palestine" class="cards-section">
+    <div class="cards-container">
+     <div class="cards">
+
+  <div class="card">
+    <img src="https://tse4.mm.bing.net/th/id/OIP.jmiH1Lknv30fO6JFyXV1fQHaE8?w=474&h=395&c=7&p=0" alt="Bethlehem">
+    <h3>Bethlehem</h3>
+    <p>เมืองประวัติศาสตร์ เป็นสถานที่ประสูติของพระเยซูและมีโบสถ์เก่าแก่หลายแห่ง</p>
+  </div>
+
+  <div class="card">
+    <img src="https://tse3.mm.bing.net/th/id/OIP.VBHjWrrJI9yZFoYvygeEuAHaEF?w=474&h=395&c=7&p=0" alt="Hebron">
+    <h3>Hebron</h3>
+    <p>เมืองเก่าแก่ที่มีสุสานบรรพชนและตลาดโบราณที่ยังคงมีชีวิตชีวา</p>
+  </div>
+
+  <div class="card">
+    <img src="https://tse2.mm.bing.net/th/id/OIP.TMzfgOlxpCsL-oxFUjbCUgHaE6?w=474&h=395&c=7&p=0" alt="Jenin">
+    <h3>Jenin</h3>
+    <p>เมืองทางเหนือที่มีชื่อเสียงด้านวัฒนธรรมและการเกษตร</p>
+  </div>
+
+  <div class="card">
+    <img src="https://tse3.mm.bing.net/th/id/OIP.ViSm5CDkZoruvUOP6Uh2SgHaE_?w=474&h=395&c=7&p=0" alt="Jericho">
+    <h3>Jericho</h3>
+    <p>เมืองที่เก่าแก่ที่สุดแห่งหนึ่งในโลก มีประวัติศาสตร์ยาวนานและโอเอซิสกลางทะเลทราย</p>
+  </div>
+
+  <div class="card">
+    <img src="https://tse1.mm.bing.net/th/id/OIP.omEjvLueYcLAgwbyeECzJwHaFj?w=474&h=395&c=7&p=0" alt="Nablus">
+    <h3>Nablus</h3>
+    <p>เมืองการค้าสำคัญ มีตลาดเก่าแก่และขนมหวานท้องถิ่นชื่อดัง</p>
+  </div>
+
+  <div class="card">
+    <img src="https://tse1.mm.bing.net/th/id/OIP.20zGFyx40s5d69arjl38tAHaE6?w=474&h=395&c=7&p=0" alt="Qalqilya">
+    <h3>Qalqilya</h3>
+    <p>เมืองเล็กที่ล้อมรอบด้วยกำแพง มีสวนสัตว์และตลาดท้องถิ่น</p>
+  </div>
+
+  <div class="card">
+    <img src="https://tse4.mm.bing.net/th/id/OIP.AduTlIlrx6-Y2LOCmaPHIgHaE8?w=474&h=395&c=7&p=0" alt="Jerusalem/Quds">
+    <h3>Jerusalem / Al-Quds</h3>
+    <p>เมืองศักดิ์สิทธิ์ของหลายศาสนา มีสถานที่สำคัญทางศาสนามากมาย</p>
+  </div>
+
+  <div class="card">
+    <img src="https://tse1.mm.bing.net/th/id/OIP.UQl69PCdeOTuUVNwjJtdaQHaD4?w=474&h=395&c=7&p=0" alt="Ramallah">
+    <h3>Ramallah</h3>
+    <p>ศูนย์กลางการบริหารและวัฒนธรรมที่ทันสมัยของปาเลสไตน์</p>
+  </div>
+
+  <div class="card">
+    <img src="https://tse1.mm.bing.net/th/id/OIP.RguD6uDVcOwuXO3oUv6agQHaE8?r=0&w=474&h=395&c=7&p=0" alt="Deir al-Balah">
+    <h3>Deir al-Balah</h3>
+    <p>เมืองชายฝั่งที่มีสวนอินทผลัมและชายหาดสวยงาม</p>
+  </div>
+
+  <div class="card">
+    <img src="https://tse2.mm.bing.net/th/id/OIP.88Oq05vcxhv8_L2FiZQOsQHaE7?r=0&w=474&h=395&c=7&p=0" alt="Gaza">
+    <h3>Gaza</h3>
+    <p>เมืองชายฝั่งขนาดใหญ่ มีประวัติศาสตร์ยาวนานและตลาดคึกคัก</p>
+  </div>
+
+  <div class="card">
+    <img src="https://tse4.mm.bing.net/th/id/OIP.4OB7r1oOu29wXcWh-k0MPQHaFH?w=474&h=395&c=7&p=0" alt="Khan Yunis">
+    <h3>Khan Yunis</h3>
+    <p>เมืองทางใต้ที่เป็นศูนย์กลางการค้าและการเกษตร</p>
+  </div>
+
+  <div class="card">
+    <img src="https://tse3.mm.bing.net/th/id/OIP.gbO5ClsRf_P6AQ_eozAZJwHaFj?r=0&w=474&h=395&c=7&p=0" alt="Rafah">
+    <h3>Rafah</h3>
+    <p>เมืองชายแดนติดอียิปต์ เป็นประตูสู่โลกภายนอกของฉนวนกาซา</p>
+  </div>
+
+  <div class="card">
+    <img src="https://tse3.mm.bing.net/th/id/OIP.fVgubsroBoz5WVNLMLOEaAHaE6?w=474&h=395&c=7&p=0" alt="Tulkarm">
+    <h3>Tulkarm</h3>
+    <p>เมืองที่รายล้อมด้วยทุ่งเกษตรและภูเขาเขียวขจี</p>
+  </div>
+
+  <div class="card">
+    <img src="https://tse2.mm.bing.net/th/id/OIP.7gjGNT2urUekJfCG4U6zcwHaDt?w=474&h=395&c=7&p=0" alt="Tubas">
+    <h3>Tubas</h3>
+    <p>เมืองทางตะวันออกเฉียงเหนือ มีทุ่งนาและทิวเขาสวยงาม</p>
+  </div>
+
+  <div class="card">
+    <img src="https://tse3.mm.bing.net/th/id/OIP.PZL97tD5jWs9FiFOOGnb3QHaE6?w=474&h=395&c=7&p=0" alt="Salfit">
+    <h3>Salfit</h3>
+    <p>เมืองบนภูเขาที่มีอากาศเย็นสบายและธรรมชาติอุดมสมบูรณ์</p>
+  </div>
+
+</div>
+
+    </div>
+  </section>
+
+  <!-- 🔹 ฟอร์มติดต่อ -->
+  <section id="contact">
+    <h2>Contact Me</h2>
+    <form onsubmit="alert('Form submitted! (This is just a demo)'); return false;">
+      <input type="text" name="name" placeholder="Your Full Name" required>
+      <input type="text" name="subject" placeholder="Subject" required>
+      <input type="tel" name="phone" placeholder="Phone Number" required pattern="[0-9]+">
+      <input type="email" name="email" placeholder="Email (ftu.ac.th)" required pattern="^[a-zA-Z0-9._%+-]+@ftu\.ac\.th$">
+      <input type="password" name="secret" placeholder="Secret Word (8+ chars, mixed case, number, symbol)" required pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}">
+      <textarea name="message" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <!-- 🔹 ปุ่มกลับขึ้นด้านบน -->
+  <button id="goTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">⬆️</button>
+
+  <!-- 🔹 ส่วนท้าย -->
+  <footer id="bottom">
+    <p>&copy; 2025 Midterm Challenge. All rights reserved. | Designed with ❤️</p>
+  </footer>
+
+</body>
+</html>
